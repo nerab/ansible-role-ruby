@@ -75,3 +75,12 @@
     group: root
     mode: 0644
   tags: ruby,gem
+
+- name: Add gem user_dir to PATH
+  copy:
+    src: etc/profile.d/gem-user_dir-path.sh
+    dest: /etc/profile.d/gem-user_dir-path.sh
+    owner: root
+    group: root
+    mode: 0644
+  tags: ruby,gem

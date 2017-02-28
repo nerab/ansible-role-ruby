@@ -1,2 +1,3 @@
+.envrc
 ansible.cfg
 tests/test.retry
