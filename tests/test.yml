@@ -2,8 +2,9 @@
 - hosts: all
   become: true
   roles:
-    # the role is called nerab.ruby, but the github repo is called
-    # 'ansible-role-ruby', which we need to refer to here. Travis CI
-    # can't seem to be checking out to a custom directory name.
-    # - ansible-role-ruby
     - ruby
+
+# the role is called nerab.ruby, but the github repo is called
+# 'ansible-role-ruby', which we need to refer to here. Travis CI
+# can't seem to be checking out to a custom directory name.
+# - ansible-role-ruby

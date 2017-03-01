@@ -10,9 +10,12 @@ addons:
 install:
   - pip install ansible
   - ansible --version
-#  - printf '[defaults]\nroles_path=..' > ansible.cfg
   - mkdir roles
   - ln -s $PWD roles/ruby
+  #- printf '[defaults]\nroles_path=roles' > ansible.cfg
+
+env:
+  ANSIBLE_ROLES_PATH=roles
 
 script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
