@@ -8,6 +8,7 @@
       - libffi-dev
       - libreadline-dev
       - autoconf
+      - language-pack-en
     state: present
   tags: apt,ruby
 
@@ -20,14 +21,14 @@
 
 - name: Download Ruby tarball
   get_url:
-    url="https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/{{ ruby_version.full }}.tar.gz"
-    dest="/tmp/{{ ruby_version.full }}.tar.gz"
+    url="https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/{{ ruby_version_full }}.tar.gz"
+    dest="/tmp/{{ ruby_version_full }}.tar.gz"
   when: ruby_present|failed
   tags: ruby
 
 - name: Unpack Ruby tarball
   unarchive:
-    src: "/tmp/{{ ruby_version.full }}.tar.gz"
+    src: "/tmp/{{ ruby_version_full }}.tar.gz"
     dest: "/usr/local/src"
     remote_src: yes
   when: ruby_present|failed
@@ -41,21 +42,21 @@
           --disable-install-rdoc
           --disable-install-capi
   args:
-    chdir: /usr/local/src/{{ ruby_version.full }}
+    chdir: /usr/local/src/{{ ruby_version_full }}
   when: ruby_present|failed
   tags: ruby
 
 - name: Build Ruby
   command: make
   args:
-    chdir: /usr/local/src/{{ ruby_version.full }}
+    chdir: /usr/local/src/{{ ruby_version_full }}
   when: ruby_present|failed
   tags: ruby
 
 - name: Install Ruby
   command: make install
   args:
-    chdir: /usr/local/src/{{ ruby_version.full }}
+    chdir: /usr/local/src/{{ ruby_version_full }}
   become: yes
   when: ruby_present|failed
   tags: ruby
@@ -84,3 +85,9 @@
     group: root
     mode: 0644
   tags: ruby,gem
+
+- name: Verify that the present ruby version is equal to the desired {{ ruby_version_full }}
+  shell: /usr/local/bin/ruby -e "exit '{{ ruby_version.major }}.{{ ruby_version.minor }}.{{ ruby_version.revision }}' == RUBY_VERSION"
+  when: ansible_system == "Linux"
+  ignore_errors: no
+  tags: ruby
