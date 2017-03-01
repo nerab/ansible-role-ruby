@@ -12,7 +12,7 @@ install:
   - ansible --version
 
   # set roles_path so we can find the role under test
-  - printf '[defaults]\nroles_path=..' > ansible.cfg
+  - printf '[defaults]\nroles_path=../..' > ansible.cfg
 
 script:
   # Syntax check
