@@ -1,0 +1,49 @@
+- name: Install prerequisite software
+  apt:
+    update_cache: yes
+    name:
+      - build-essential
+      - libyaml-dev
+      - libssl-dev
+      - libffi-dev
+      - libreadline-dev
+      - autoconf
+    state: present
+  tags: apt,ruby
+
+- name: Download Ruby tarball
+  get_url:
+    url="https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/ruby-{{ ruby_version_full }}.tar.gz"
+    dest="/tmp/ruby-{{ ruby_version_full }}.tar.gz"
+  tags: ruby
+
+- name: Unpack Ruby tarball
+  unarchive:
+    src: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
+    dest: "/usr/local/src"
+    remote_src: yes
+  tags: ruby
+
+- name: Configure Ruby
+  command: |
+          ./configure
+          --enable-shared
+          --disable-install-doc
+          --disable-install-rdoc
+          --disable-install-capi
+  args:
+    chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+  tags: ruby
+
+- name: Build Ruby
+  command: make
+  args:
+    chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+  tags: ruby
+
+- name: Install Ruby
+  command: make install
+  args:
+    chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+  become: yes
+  tags: ruby

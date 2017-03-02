@@ -20,7 +20,6 @@ Besides the tests running in Travis, there is a [Vagrant file](tests/Vagrantfile
 
 # TODO
 
-* Remove `when: ansible_system == "Linux"`
 * Uninstall the old Ruby if the actually present ruby version is different from the desired one:
 
   ```yaml
