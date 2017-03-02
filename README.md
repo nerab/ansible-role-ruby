@@ -17,3 +17,7 @@ vars:
 # Test
 
 Besides the tests running in Travis, there is a [Vagrant file](tests/Vagrantfile) in the [tests](tests) folder that runs this role when started with `vagrant up`.
+
+# TODO
+
+* Install if the actually present ruby version is different from the desired one
