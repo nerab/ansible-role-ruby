@@ -8,7 +8,6 @@
       - libffi-dev
       - libreadline-dev
       - autoconf
-      - language-pack-en
     state: present
   tags: apt,ruby
 

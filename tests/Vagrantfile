@@ -1,18 +1,27 @@
 require 'pathname'
-machine_name = Pathname(__dir__).parent.realpath.basename.to_s
+project_name = Pathname(__dir__).parent.realpath.basename.to_s
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'ubuntu/xenial64'
-  config.vm.define(machine_name)
-
   config.vm.provider 'virtualbox' do |v|
-    v.name = machine_name
     v.cpus = 2
   end
 
-  config.vm.provision 'ansible' do |ansible|
-    ansible.playbook = 'test.yml'
-    ansible.galaxy_roles_path = '../..'
-    ansible.raw_arguments = ['-e ansible_python_interpreter=/usr/bin/python3']
+  config.vm.define("#{project_name}_debian") do |machine|
+    machine.vm.box = 'debian/jessie64'
+
+    machine.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'test.yml'
+      ansible.galaxy_roles_path = '../..'
+    end
+  end
+
+  config.vm.define("#{project_name}_ubuntu") do |machine|
+    machine.vm.box = 'ubuntu/xenial64'
+
+    machine.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'test.yml'
+      ansible.galaxy_roles_path = '../..'
+      ansible.raw_arguments = ['-e ansible_python_interpreter=/usr/bin/python3']
+    end
   end
 end
