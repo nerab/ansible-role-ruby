@@ -20,8 +20,8 @@ Besides the tests running in Travis, there is a [Vagrant file](tests/Vagrantfile
 
 # TODO
 
-* Uninstall the old Ruby if the actually present ruby version is different from the desired one:
-
-  ```yaml
-  when: "ruby_version_present == '{{ ruby_version_full }}'"
-  ```
+* For each OS, test
+  1. No Ruby present; should install the desired one
+  1. Previous Ruby present; should uninstall the old one and the install the desired one
+  1. Desired Ruby present; should do nothing
+* For all scenarios, add idempotence tests

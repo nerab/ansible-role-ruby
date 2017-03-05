@@ -1,19 +1,23 @@
-- name: Check if any ruby is present
-  command: test -x /usr/local/bin/ruby
-  ignore_errors: yes
-  register: ruby_present
-  tags: ruby
-
-- name: Get what version of ruby is present
+- name: "Get Ruby version"
   command: "/usr/local/bin/ruby -e 'puts RUBY_VERSION'"
-  when: ruby_present|succeeded
+  changed_when: false
   register: ruby_version_present
+  ignore_errors: true
 
-
+- name: Uninstall the current Ruby if it is not the desired Ruby version
+  include: tasks/uninstall.yml
+  when: " ( ruby_version_present | succeeded ) and ('{{ruby_version_full}}' not in ruby_version_present.stdout) "
 
 - name: Install the desired Ruby version
   include: tasks/install.yml
-  when: ruby_present|failed or ruby_version_present|skipped
+  when: " ( ruby_version_present | failed ) or ('{{ruby_version_full}}' not in ruby_version_present.stdout) "
+
+- name: Assert that the present ruby version is equal to the desired {{ ruby_version_full }}
+  command: /usr/local/bin/ruby -e "exit '{{ ruby_version_full }}' == RUBY_VERSION"
+  register: command_result
+  changed_when: command_result.rc != 0
+  ignore_errors: no
+  tags: ruby
 
 - name: Install latest bundler gem
   gem:
@@ -39,8 +43,3 @@
     group: root
     mode: 0644
   tags: ruby,gem
-
-- name: Verify that the present ruby version is equal to the desired {{ ruby_version_full }}
-  command: /usr/local/bin/ruby -e "exit '{{ ruby_version_full }}' == RUBY_VERSION"
-  ignore_errors: no
-  tags: ruby

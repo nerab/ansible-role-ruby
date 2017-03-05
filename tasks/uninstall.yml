@@ -1,2 +1,3 @@
-- name: Uninstall the old Ruby
-  shell: "xargs rm < /usr/local/src/ruby-{{ ruby_version_present.stdout }}/.installed.list"
+- name: Uninstall the current Ruby
+  shell: "xargs rm --dir < /usr/local/src/ruby-{{ ruby_version_present.stdout }}/.installed.list"
+  ignore_errors: true
