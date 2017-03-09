@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'csv'
 require 'vagrant/machine_readable_output/converters'
-require 'vagrant/machine_readable_output/type_mapper'
+require 'vagrant/machine_readable_output/message_type_mapper'
 
 module Vagrant
   module MachineReadableOutput
@@ -10,16 +10,14 @@ module Vagrant
     # see https://www.vagrantup.com/docs/cli/machine-readable.html
     #
     class Parser
-      class ComponentMapper
-        def map(data)
-          type_mapper = TypeMapper.new
-          clazz = type_mapper.map(data[:type])
-
-          clazz.new.tap do |component|
-            component.timestamp = data[:timestamp]
-            # ...
-            component.optional = data[:optional]
-          end
+      #
+      # Maps a message struct to a message
+      #
+      class MessageMapper
+        def map(message)
+          message_type_mapper = MessageTypeMapper.new
+          message_class = message_type_mapper.map(message[:type])
+          message_class.new(message[:timestamp], message[:target], message[:data])
         end
       end
 
@@ -32,10 +30,10 @@ module Vagrant
       CSV::Converters[:newline] = NewlineConverter.new(:optional)
 
       def parse(io)
-        component_mapper = ComponentMapper.new
+        message_mapper = MessageMapper.new
 
-        CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).map do |data|
-          component_mapper.map(data)
+        CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).map do |message|
+          message_mapper.map(message)
         end
       end
     end

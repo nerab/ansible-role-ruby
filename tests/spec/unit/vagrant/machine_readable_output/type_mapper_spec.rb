@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'vagrant/machine_readable_output/type_mapper'
+require 'vagrant/machine_readable_output/message_type_mapper'
 
 module Vagrant::MachineReadableOutput
   # rubocop:disable Metrics/BlockLength
-  RSpec.describe TypeMapper do
+  RSpec.describe MessageTypeMapper do
     it 'understands metadata' do
       expect(subject.map('metadata')).to eq(Metadata)
     end

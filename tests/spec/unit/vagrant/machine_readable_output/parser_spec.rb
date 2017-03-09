@@ -2,35 +2,52 @@
 require 'spec_helper'
 require 'vagrant/machine_readable_output/parser'
 
-RSpec.describe Vagrant::MachineReadableOutput::Parser do
-  context 'aborted' do
-    let(:parsed) { subject.parse(fixture('aborted.txt').read) }
+module Vagrant::MachineReadableOutput
+  # rubocop:disable Metrics/BlockLength
+  RSpec.describe Parser do
+    context 'aborted' do
+      let(:parsed) { subject.parse(fixture('aborted.txt').read) }
 
-    it 'can parse' do
-      expect(parsed).to be
-      expect(parsed).not_to be_empty
-    end
-
-    it 'has a list of components' do
-      expect(parsed).to be
-      expect(parsed.size).to eq(11)
-    end
-
-    it 'each component has a time stamp' do
-      parsed.each do |component|
-        expect(component).to respond_to(:timestamp)
-        expect(component.timestamp).to be_within(2).of(Time.at(1489008438))
+      it 'can parse' do
+        expect(parsed).to be
+        expect(parsed).not_to be_empty
       end
-    end
 
-    it 'each component has data' do
-      component = parsed.last
-      expect(component).to respond_to(:optional)
+      it 'has a list of messages' do
+        expect(parsed).to be
+        expect(parsed.size).to eq(11)
+      end
 
-      expect(component.optional).to be
-      expect(component.optional).to_not be_empty
-      expect(component.optional).to_not include('VAGRANT_COMMA')
-      expect(component.optional).to_not include('\\n')
+      it 'each message has a time stamp' do
+        parsed.each do |message|
+          expect(message).to respond_to(:timestamp)
+          expect(message.timestamp).to be_within(2).of(Time.at(1489008438))
+        end
+      end
+
+      # ansible-role-ruby_debian
+      # ansible-role-ruby_ubuntu
+      context 'the XX message' do
+        let(:message) { parsed[] }
+      end
+
+      context 'the UI message' do
+        let(:message) { parsed.last }
+
+        it 'has a target' do
+          expect(message).to be_a(Ui)
+
+          expect(message).to respond_to(:target)
+          expect(message.target).to be_nil
+        end
+
+        it 'has data' do
+          expect(message.data).to be
+          expect(message.data).to_not be_empty
+          expect(message.data).to_not include('VAGRANT_COMMA')
+          expect(message.data).to_not include('\\n')
+        end
+      end
     end
   end
 end
