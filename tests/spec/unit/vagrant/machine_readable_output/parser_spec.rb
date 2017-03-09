@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'vagrant/machine_readable_output_parser'
+require 'vagrant/machine_readable_output/parser'
 
-RSpec.describe Vagrant::MachineReadableOutputParser do
+RSpec.describe Vagrant::MachineReadableOutput::Parser do
   context 'aborted' do
     let(:parsed) { subject.parse(fixture('aborted.txt').read) }
 
