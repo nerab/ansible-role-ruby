@@ -25,10 +25,36 @@ module Vagrant::MachineReadableOutput
         end
       end
 
-      # ansible-role-ruby_debian
-      # ansible-role-ruby_ubuntu
-      context 'the XX message' do
-        let(:message) { parsed[] }
+      context 'the state message' do
+        context 'of the Debian VM' do
+          let(:message) { parsed[3] }
+
+          it 'has a target' do
+            expect(message).to be_a(State)
+            expect(message).to respond_to(:target)
+            expect(message.target).to_not be_nil
+            expect(message.target).to eq('ansible-role-ruby_debian')
+          end
+
+          it 'has data' do
+            expect(message.data).to eq('aborted')
+          end
+        end
+
+        context 'of the Ubuntu VM' do
+          let(:message) { parsed[7] }
+
+          it 'has a target' do
+            expect(message).to be_a(State)
+            expect(message).to respond_to(:target)
+            expect(message.target).to_not be_nil
+            expect(message.target).to eq('ansible-role-ruby_ubuntu')
+          end
+
+          it 'has data' do
+            expect(message.data).to eq('aborted')
+          end
+        end
       end
 
       context 'the UI message' do
