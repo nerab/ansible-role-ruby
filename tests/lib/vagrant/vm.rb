@@ -4,11 +4,11 @@ require 'pathname'
 module Vagrant
   class VM
     def save_snapshot(name)
-      `vagrant snapshot save #{version}`
+      `vagrant snapshot save #{version} --machine-readable`
     end
 
     def restore_snapshot(name)
-      `vagrant snapshot restore #{version}`
+      `vagrant snapshot restore #{version} --machine-readable`
     end
 
     def has_snapshot?(version)
@@ -17,7 +17,7 @@ module Vagrant
     end
 
     def up(provision: true)
-      `vagrant up --#{provision ? '' : 'no-'}provision`
+      `vagrant up --#{provision ? '' : 'no-'}provision --machine-readable`
     end
 
     def find_or_create_snapshot(version)

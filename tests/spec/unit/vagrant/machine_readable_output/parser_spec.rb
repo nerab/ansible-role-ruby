@@ -5,16 +5,12 @@ require 'vagrant/machine_readable_output/parser'
 module Vagrant::MachineReadableOutput
   # rubocop:disable Metrics/BlockLength
   RSpec.describe Parser do
-    context 'aborted' do
+    context 'when the VM is in aborted state' do
       let(:parsed) { subject.parse(fixture('aborted.txt').read) }
-
-      it 'can parse' do
-        expect(parsed).to be
-        expect(parsed).not_to be_empty
-      end
 
       it 'has a list of messages' do
         expect(parsed).to be
+        expect(parsed).not_to be_empty
         expect(parsed.size).to eq(11)
       end
 
@@ -25,15 +21,17 @@ module Vagrant::MachineReadableOutput
         end
       end
 
-      context 'the state message' do
-        context 'of the Debian VM' do
-          let(:message) { parsed[3] }
+      it 'each message has a target' do
+        parsed.each do |message|
+          expect(message).to respond_to(:target)
+        end
+      end
 
+      context 'the state message' do
+        shared_examples 'message with target' do |target|
           it 'has a target' do
             expect(message).to be_a(State)
-            expect(message).to respond_to(:target)
-            expect(message.target).to_not be_nil
-            expect(message.target).to eq('ansible-role-ruby_debian')
+            expect(message.target).to eq(target)
           end
 
           it 'has data' do
@@ -41,19 +39,14 @@ module Vagrant::MachineReadableOutput
           end
         end
 
+        context 'of the Debian VM' do
+          let(:message) { parsed[3] }
+          it_behaves_like('message with target', 'ansible-role-ruby_debian')
+        end
+
         context 'of the Ubuntu VM' do
           let(:message) { parsed[7] }
-
-          it 'has a target' do
-            expect(message).to be_a(State)
-            expect(message).to respond_to(:target)
-            expect(message.target).to_not be_nil
-            expect(message.target).to eq('ansible-role-ruby_ubuntu')
-          end
-
-          it 'has data' do
-            expect(message.data).to eq('aborted')
-          end
+          it_behaves_like('message with target', 'ansible-role-ruby_ubuntu')
         end
       end
 

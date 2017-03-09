@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'csv'
 require 'vagrant/machine_readable_output/converters'
-require 'vagrant/machine_readable_output/message_type_mapper'
+require 'vagrant/machine_readable_output/message_mapper'
 
 module Vagrant
   module MachineReadableOutput
@@ -10,17 +10,6 @@ module Vagrant
     # see https://www.vagrantup.com/docs/cli/machine-readable.html
     #
     class Parser
-      #
-      # Maps a message struct to a message
-      #
-      class MessageMapper
-        def map(message)
-          message_type_mapper = MessageTypeMapper.new
-          message_class = message_type_mapper.map(message[:type])
-          message_class.new(message[:timestamp], message[:target], message[:data])
-        end
-      end
-
       # TODO: 'data' is actually "zero or more comma-separated values", so we need to handle it as array
       HEADERS = %i(timestamp target type data optional).freeze
       CONVERTERS = %i(epoch vagrant_comma newline) + CSV::Converters.keys
