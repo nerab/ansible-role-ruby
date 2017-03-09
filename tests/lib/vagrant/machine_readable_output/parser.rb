@@ -6,7 +6,7 @@ require 'vagrant/machine_readable_output/message_mapper'
 module Vagrant
   module MachineReadableOutput
     #
-    # Parse Vagrant's machine readable output format
+    # Parse a line of Vagrant's machine-readable output format
     # see https://www.vagrantup.com/docs/cli/machine-readable.html
     #
     class Parser
@@ -20,10 +20,8 @@ module Vagrant
 
       def parse(io)
         message_mapper = MessageMapper.new
-
-        CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).map do |message|
-          message_mapper.map(message)
-        end
+        message = CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).shift
+        message_mapper.map(message)
       end
     end
   end
