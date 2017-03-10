@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 module Vagrant
   module MachineReadableOutput
+    #
+    # Base class for CSV field converters
+    # Subclasses are supposed to override #convert.
+    #
     class Converter
       def initialize(*headers)
         @headers = headers
@@ -27,7 +31,7 @@ module Vagrant
     end
 
     class NewlineConverter < Converter
-      def convert(field, field_info)
+      def convert(field, _)
         field.gsub('\\n', "\n")
       end
     end

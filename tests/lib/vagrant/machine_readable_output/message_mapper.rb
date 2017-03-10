@@ -4,7 +4,7 @@ require 'vagrant/machine_readable_output/message_type_mapper'
 module Vagrant
   module MachineReadableOutput
     #
-    # Maps a message struct to a message
+    # Maps a CSV row to a Message
     #
     class MessageMapper
       def initialize

@@ -20,6 +20,9 @@ module Vagrant
     # Meta data
     Metadata = Class.new(Message)
 
+    # Action
+    Action = Class.new(Message)
+
     # Name of a box installed into Vagrant.
     BoxName = Class.new(Message)
 

@@ -10,7 +10,6 @@ module Vagrant
     # see https://www.vagrantup.com/docs/cli/machine-readable.html
     #
     class Parser
-      # TODO: 'data' is actually "zero or more comma-separated values", so we need to handle it as array
       HEADERS = %i(timestamp target type data).freeze
       CONVERTERS = %i(epoch vagrant_comma newline) + CSV::Converters.keys
 

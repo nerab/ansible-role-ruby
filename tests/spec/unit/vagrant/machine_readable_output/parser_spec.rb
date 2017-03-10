@@ -44,6 +44,11 @@ module Vagrant::MachineReadableOutput
           expect(message.data).to include('simply run')
         end
       end
+
+      context 'ui' do
+        let(:line){'1489166158,,ui,info,Current machine states:\n\nansible-role-ruby_debian  running (virtualbox)\nansible-role-ruby_ubuntu  running (virtualbox)\n\nThis environment represents multiple VMs. The VMs are all listed\nabove with their current state. For more information about a specific\nVM%!(VAGRANT_COMMA) run `vagrant status NAME`.'}
+        it_behaves_like('escaping data')
+      end
     end
 
     context "VM state is 'aborted'" do
