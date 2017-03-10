@@ -5,7 +5,7 @@ require 'logger'
 
 module Vagrant
   class VM
-    def initialize(logger = default_logger)
+    def initialize(logger=default_logger)
       @logger = logger
       @parser = MachineReadableOutput::Parser.new
     end

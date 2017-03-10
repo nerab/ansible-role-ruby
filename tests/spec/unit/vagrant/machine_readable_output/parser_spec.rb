@@ -18,7 +18,7 @@ module Vagrant::MachineReadableOutput
 
     context "VM state is 'running'" do
       context 'state' do
-        let(:line) {'1489156915,ansible-role-ruby_debian,state,running'}
+        let(:line) { '1489156915,ansible-role-ruby_debian,state,running' }
 
         it 'has the expected data' do
           expect(message.data).to eq('running')
@@ -35,7 +35,7 @@ module Vagrant::MachineReadableOutput
 
       context 'state-human-long' do
         # rubocop:disable Metrics/LineLength
-        let(:line) { '1489156915,ansible-role-ruby_debian,state-human-long,The VM is running. To stop this VM%!(VAGRANT_COMMA) you can run `vagrant halt` to\nshut it down forcefully%!(VAGRANT_COMMA) or you can run `vagrant suspend` to simply\nsuspend the virtual machine. In either case%!(VAGRANT_COMMA) to restart it again%!(VAGRANT_COMMA)\nsimply run `vagrant up`.'}
+        let(:line) { '1489156915,ansible-role-ruby_debian,state-human-long,The VM is running. To stop this VM%!(VAGRANT_COMMA) you can run `vagrant halt` to\nshut it down forcefully%!(VAGRANT_COMMA) or you can run `vagrant suspend` to simply\nsuspend the virtual machine. In either case%!(VAGRANT_COMMA) to restart it again%!(VAGRANT_COMMA)\nsimply run `vagrant up`.' }
         # rubocop:enable Metrics/LineLength
 
         it_behaves_like('escaping data')
@@ -46,7 +46,9 @@ module Vagrant::MachineReadableOutput
       end
 
       context 'ui' do
-        let(:line){'1489166158,,ui,info,Current machine states:\n\nansible-role-ruby_debian  running (virtualbox)\nansible-role-ruby_ubuntu  running (virtualbox)\n\nThis environment represents multiple VMs. The VMs are all listed\nabove with their current state. For more information about a specific\nVM%!(VAGRANT_COMMA) run `vagrant status NAME`.'}
+        # rubocop:disable Metrics/LineLength
+        let(:line) { '1489166158,,ui,info,Current machine states:\n\nansible-role-ruby_debian  running (virtualbox)\nansible-role-ruby_ubuntu  running (virtualbox)\n\nThis environment represents multiple VMs. The VMs are all listed\nabove with their current state. For more information about a specific\nVM%!(VAGRANT_COMMA) run `vagrant status NAME`.' }
+        # rubocop:enable Metrics/LineLength
         it_behaves_like('escaping data')
       end
     end
