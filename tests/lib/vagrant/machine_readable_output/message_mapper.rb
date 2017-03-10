@@ -7,10 +7,27 @@ module Vagrant
     # Maps a message struct to a message
     #
     class MessageMapper
-      def map(message)
-        message_type_mapper = MessageTypeMapper.new
-        message_class = message_type_mapper.map(message[:type])
-        message_class.new(message[:timestamp], message[:target], message[:data])
+      def initialize
+        @message_type_mapper = MessageTypeMapper.new
+      end
+
+      def map(row)
+        message_class = @message_type_mapper.map(row[:type])
+        message_class.new(row[:timestamp], row[:target], data(row))
+      end
+
+      private
+
+      def data(row)
+        extra = row.headers.map.with_index { |x, i| i if x.nil? }.compact.map do |i|
+          row.field(i)
+        end
+
+        if extra.any?
+          extra.unshift(row[:data])
+        else
+          row[:data]
+        end
       end
     end
   end

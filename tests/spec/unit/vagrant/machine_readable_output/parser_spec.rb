@@ -5,8 +5,48 @@ require 'vagrant/machine_readable_output/parser'
 module Vagrant::MachineReadableOutput
   # rubocop:disable Metrics/BlockLength
   RSpec.describe Parser do
-    context 'when the VM is in aborted state' do
-      let(:message) { subject.parse(line) }
+    let(:message) { subject.parse(line) }
+
+    shared_examples 'escaping data' do
+      it 'has data' do
+        expect(message.data).to be
+        expect(message.data).to_not be_empty
+        expect(message.data).to_not include('VAGRANT_COMMA')
+        expect(message.data).to_not include('\\n')
+      end
+    end
+
+    context "VM state is 'running'" do
+      context 'state' do
+        let(:line) {'1489156915,ansible-role-ruby_debian,state,running'}
+
+        it 'has the expected data' do
+          expect(message.data).to eq('running')
+        end
+      end
+
+      context 'state-human-short' do
+        let(:line) { '1489156915,ansible-role-ruby_debian,state-human-short,running' }
+
+        it 'has the expected data' do
+          expect(message.data).to eq('running')
+        end
+      end
+
+      context 'state-human-long' do
+        # rubocop:disable Metrics/LineLength
+        let(:line) { '1489156915,ansible-role-ruby_debian,state-human-long,The VM is running. To stop this VM%!(VAGRANT_COMMA) you can run `vagrant halt` to\nshut it down forcefully%!(VAGRANT_COMMA) or you can run `vagrant suspend` to simply\nsuspend the virtual machine. In either case%!(VAGRANT_COMMA) to restart it again%!(VAGRANT_COMMA)\nsimply run `vagrant up`.'}
+        # rubocop:enable Metrics/LineLength
+
+        it_behaves_like('escaping data')
+
+        it 'has the expected data' do
+          expect(message.data).to include('simply run')
+        end
+      end
+    end
+
+    context "VM state is 'aborted'" do
       let(:line) { '1489008439,ansible-role-ruby_debian,state-human-short,aborted' }
 
       it 'produces a message' do
@@ -23,25 +63,29 @@ module Vagrant::MachineReadableOutput
       end
 
       context 'the state message' do
-        shared_examples 'message with target' do |target|
+        shared_examples 'message with target' do |target, expected_data|
           it 'has a target' do
             expect(message).to be_a(State)
             expect(message.target).to eq(target)
           end
 
           it 'has data' do
-            expect(message.data).to eq('aborted')
+            expect(message.data).to_not be_empty
+          end
+
+          it 'has the expected data' do
+            expect(message.data).to eq(expected_data)
           end
         end
 
         context 'of the Debian VM' do
           let(:line) { '1489008439,ansible-role-ruby_debian,state,aborted' }
-          it_behaves_like('message with target', 'ansible-role-ruby_debian')
+          it_behaves_like('message with target', 'ansible-role-ruby_debian', 'aborted')
         end
 
         context 'of the Ubuntu VM' do
           let(:line) { '1489008439,ansible-role-ruby_ubuntu,state,aborted' }
-          it_behaves_like('message with target', 'ansible-role-ruby_ubuntu')
+          it_behaves_like('message with target', 'ansible-role-ruby_ubuntu', 'aborted')
         end
       end
 
@@ -57,11 +101,14 @@ module Vagrant::MachineReadableOutput
           expect(message.target).to be_nil
         end
 
-        it 'has data' do
-          expect(message.data).to be
-          expect(message.data).to_not be_empty
-          expect(message.data).to_not include('VAGRANT_COMMA')
-          expect(message.data).to_not include('\\n')
+        it_behaves_like('escaping data')
+      end
+
+      context 'a message with even more extra fields' do
+        let(:line) { '1489008439,a_target,ui,info,extra0,extra1,extra2' }
+
+        it 'splats extra fields into data' do
+          expect(message.data).to eq(%w(info extra0 extra1 extra2))
         end
       end
     end

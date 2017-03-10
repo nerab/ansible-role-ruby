@@ -2,7 +2,17 @@
 module Vagrant
   module MachineReadableOutput
     # An (abstract) message of a message
-    Message = Struct.new(:timestamp, :target, :data)
+    Message = Struct.new(:timestamp, :target, :data) do
+      def to_s
+        "#{class_name}: #{data}"
+      end
+
+      private
+
+      def class_name
+        self.class.name.split('::').last
+      end
+    end
 
     # UI
     Ui = Class.new(Message)

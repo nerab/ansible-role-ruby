@@ -11,17 +11,20 @@ module Vagrant
     #
     class Parser
       # TODO: 'data' is actually "zero or more comma-separated values", so we need to handle it as array
-      HEADERS = %i(timestamp target type data optional).freeze
+      HEADERS = %i(timestamp target type data).freeze
       CONVERTERS = %i(epoch vagrant_comma newline) + CSV::Converters.keys
 
       CSV::Converters[:epoch] = EpochConverter.new(:timestamp)
-      CSV::Converters[:vagrant_comma] = VagrantCommaConverter.new(:optional)
-      CSV::Converters[:newline] = NewlineConverter.new(:optional)
+      CSV::Converters[:vagrant_comma] = VagrantCommaConverter.new(:data)
+      CSV::Converters[:newline] = NewlineConverter.new(:data)
+
+      def initialize
+        @message_mapper = MessageMapper.new
+      end
 
       def parse(io)
-        message_mapper = MessageMapper.new
-        message = CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).shift
-        message_mapper.map(message)
+        row = CSV.new(io, col_sep: ',', headers: HEADERS, converters: CONVERTERS).shift
+        @message_mapper.map(row)
       end
     end
   end
