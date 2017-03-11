@@ -4,7 +4,10 @@ require 'vagrant/machine_readable_output/parser'
 require 'logger'
 
 module Vagrant
-  class VM
+  #
+  # Represents a Vagrant environment with potentially virtual machines
+  #
+  class Environment
     def initialize(logger=default_logger)
       @logger = logger
       @parser = MachineReadableOutput::Parser.new
@@ -22,7 +25,13 @@ module Vagrant
       results = {}
 
       vagrant('snapshot', 'list') do |message|
-        warn "*** #{message}"
+        if message.is_a?(MachineReadableOutput::Ui)
+          type, snapshot_name = *message.data
+
+          if type == 'output'
+            results[message.target] = snapshot_name
+          end
+        end
       end
 
       results
@@ -45,15 +54,24 @@ module Vagrant
       results
     end
 
+    def provision
+      vagrant('provision')
+    end
+
     def up(provision: true)
       vagrant('up', "--#{provision ? '' : 'no-'}provision")
     end
 
+    # if a snapshot cannot be found, it will be created. Before doing so, `name` will be yielded to the given block.
     def find_or_create_snapshot(name)
+      vagrant('halt')
+
       if has_snapshot?(name)
+        logger.info("Found desired snapshot #{name}")
         restore_snapshot(name)
         up(provision: false)
       else
+        logger.info("Could not find desired snapshot #{name}")
         yield name if block_given?
         up(provision: true)
         save_snapshot(name)
@@ -66,7 +84,7 @@ module Vagrant
 
     def default_logger
       Logger.new(STDERR).tap do |logger|
-        logger.level = Logger::ERROR
+        logger.level = Logger::DEBUG
       end
     end
 
@@ -74,7 +92,7 @@ module Vagrant
       Open3.popen3('vagrant', '--machine-readable', command, *args) do |stdin, stdout, stderr, wait_thread|
         stdout.each do |line|
           message = @parser.parse(line)
-          logger.info(message.to_s)
+          logger.debug(message.to_s)
           yield message if block_given?
         end
 

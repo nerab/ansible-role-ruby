@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'vagrant/vm'
+require 'vagrant/environment'
 
 module Vagrant
-  RSpec.describe VM do
+  RSpec.describe Environment do
     it 'exists' do
       expect(subject).to be
     end
