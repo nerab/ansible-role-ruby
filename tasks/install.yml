@@ -23,6 +23,7 @@
     src: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
     dest: "/usr/local/src"
     remote_src: yes
+  become: true
   tags: ruby
 
 - name: Configure Ruby
@@ -34,12 +35,14 @@
           --disable-install-capi
   args:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+  become: true
   tags: ruby
 
 - name: Build Ruby
   command: make
   args:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+  become: true
   tags: ruby
 
 - name: Install Ruby
