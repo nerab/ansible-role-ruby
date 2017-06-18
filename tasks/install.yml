@@ -9,6 +9,7 @@
       - libreadline-dev
       - autoconf
     state: present
+  become: true
   tags: apt,ruby
 
 - name: Download Ruby tarball
@@ -45,5 +46,5 @@
   command: make install
   args:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
-  become: yes
+  become: true
   tags: ruby

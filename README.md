@@ -11,7 +11,7 @@ vars:
   ruby_version:
     major: 2
     minor: 4
-    revision: 0
+    revision: 1
 ```
 
 # Test

@@ -24,6 +24,7 @@
     name: bundler
     user_install: no
     state: latest
+  become: true
   tags: ruby,gem,bundler
 
 - name: Set global gem options
@@ -33,6 +34,7 @@
     owner: root
     group: root
     mode: 0644
+  become: true
   tags: ruby,gem
 
 - name: Add gem user_dir to PATH
@@ -42,4 +44,5 @@
     owner: root
     group: root
     mode: 0644
+  become: true
   tags: ruby,gem

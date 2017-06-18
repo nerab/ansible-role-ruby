@@ -1,10 +1,14 @@
 - name: Uninstall all gems
   shell: |
          for gem in $(gem list --no-versions); do
-           sudo gem uninstall --all --ignore-dependencies --executables $gem
+           gem uninstall --all --ignore-dependencies --executables $gem
          done
   ignore_errors: true
+  become: true
+  tags: ruby,gem
 
 - name: Uninstall the current Ruby
   shell: "xargs rm --dir /usr/local/src/ruby-{{ ruby_version_present.stdout }}/.installed.list"
   ignore_errors: true
+  become: true
+  tags: ruby
