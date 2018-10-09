@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+$LOAD_PATH.unshift File.join(__dir__, '..', 'lib')
+require 'vagrant/environment'
+
+vagrant = Vagrant::Environment.new
+
+vagrant.vms.each do |vm|
+  snapshots = vm.snapshots
+  if snapshots.any?
+    puts "VM '#{vm.name}' has #{snapshots.count} snapshots: #{snapshots}"
+  else
+    puts "VM '#{vm.name}' has no snapshots"
+  end
+end

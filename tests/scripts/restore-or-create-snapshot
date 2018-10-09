@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+$LOAD_PATH.unshift File.join(__dir__, '..', 'lib')
+require 'vagrant/environment'
+
+vagrant = Vagrant::Environment.new
+desired_snapshot_name = ARGV.first
+
+vagrant.vms.each do |vm|
+  vm.restore_or_create_snapshot(desired_snapshot_name) do |found|
+    if found
+      "#{vm.name}: found snapshot #{desired_snapshot_name}"
+    else
+      "#{vm.name}: could not find #{desired_snapshot_name}"
+    end
+  end
+end
