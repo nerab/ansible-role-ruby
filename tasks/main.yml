@@ -3,14 +3,17 @@
   changed_when: false
   register: ruby_version_present
   ignore_errors: true
+  tags: ruby
 
 - name: Uninstall the current Ruby if it is not the desired Ruby version
   include: tasks/uninstall.yml
   when: "(ruby_version_present is succeeded) and (ruby_version_full not in ruby_version_present.stdout)"
+  tags: ruby
 
 - name: Install the desired Ruby version
   include: tasks/install.yml
   when: "(ruby_version_present is failed) or (ruby_version_full not in ruby_version_present.stdout)"
+  tags: ruby
 
 - name: Assert that the present ruby version is equal to the desired {{ ruby_version_full }}
   command: /usr/local/bin/ruby -e "exit '{{ ruby_version_full }}' == RUBY_VERSION"
