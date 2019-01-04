@@ -2,12 +2,15 @@
   apt:
     update_cache: yes
     name:
+      - autoconf
       - build-essential
-      - libyaml-dev
-      - libssl-dev
       - libffi-dev
       - libreadline-dev
-      - autoconf
+      - libssl-dev
+      - libyaml-dev
+      - openssl
+      - zlib1g
+      - zlib1g-dev
     state: present
   become: true
   tags: apt,ruby
