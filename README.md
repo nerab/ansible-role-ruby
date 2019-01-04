@@ -26,5 +26,6 @@ $ ANSIBLE_ROLES_PATH=.. ansible-playbook -i tests/inventory tests/test.yml --syn
 
 # TODO
 
+* Uninstall leaves a lot of empty directories behind
 * Travis matrix to test the [stable Ruby releases](https://www.ruby-lang.org/en/downloads)
 * Switch tests to use [Molecule](https://www.jeffgeerling.com/blog/2018/testing-your-ansible-roles-molecule)

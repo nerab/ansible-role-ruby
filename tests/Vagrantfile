@@ -3,7 +3,7 @@ project_name = Pathname(__dir__).parent.realpath.basename.to_s
 
 Vagrant.configure('2') do |config|
   config.vm.provider 'virtualbox' do |v|
-    v.cpus = 2
+    v.cpus = 4
   end
 
   config.vm.define("#{project_name}_debian") do |machine|
