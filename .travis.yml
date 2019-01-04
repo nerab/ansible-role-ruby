@@ -15,10 +15,10 @@ env:
   ANSIBLE_ROLES_PATH=..
 
 script:
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-  - ansible-playbook tests/test.yml -i tests/inventory --connection=local --become
+  - ansible-playbook tests/playbook.yml -i tests/inventory --syntax-check
+  - ansible-playbook tests/playbook.yml -i tests/inventory --connection=local --become
   - >
-    ansible-playbook tests/test.yml -i tests/inventory --connection=local --become
+    ansible-playbook tests/playbook.yml -i tests/inventory --connection=local --become
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)

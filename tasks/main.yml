@@ -6,11 +6,11 @@
 
 - name: Uninstall the current Ruby if it is not the desired Ruby version
   include: tasks/uninstall.yml
-  when: " ( ruby_version_present is succeeded ) and ('{{ruby_version_full}}' not in ruby_version_present.stdout) "
+  when: "(ruby_version_present is succeeded) and (ruby_version_full not in ruby_version_present.stdout)"
 
 - name: Install the desired Ruby version
   include: tasks/install.yml
-  when: " ( ruby_version_present is failed ) or ('{{ruby_version_full}}' not in ruby_version_present.stdout) "
+  when: "(ruby_version_present is failed) or (ruby_version_full not in ruby_version_present.stdout)"
 
 - name: Assert that the present ruby version is equal to the desired {{ ruby_version_full }}
   command: /usr/local/bin/ruby -e "exit '{{ ruby_version_full }}' == RUBY_VERSION"
@@ -19,13 +19,14 @@
   ignore_errors: no
   tags: ruby
 
-- name: Install latest bundler gem
+- name: Install latest bundler gem for Ruby < 2.6
   gem:
     name: bundler
     user_install: no
     state: latest
   become: true
   tags: ruby,gem,bundler
+  when: "(ruby_version.major|int >= 2) and (ruby_version.minor|int < 6)"
 
 - name: Set global gem options
   copy:
