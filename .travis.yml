@@ -3,11 +3,6 @@ language: python
 cache: pip
 sudo: required
 
-addons:
-  apt:
-    packages:
-    - python-pip
-
 install:
   - pip install ansible
   - ansible --version
@@ -16,8 +11,14 @@ env:
   ANSIBLE_ROLES_PATH=..
 
 script:
-  - ansible-playbook tests/playbook.yml -i tests/inventory --syntax-check
-  - ansible-playbook tests/playbook.yml -i tests/inventory --connection=local --become
+  - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --syntax-check
+  - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --connection=local --become
+
+matrix:
+  include:
+  - env: PLAYBOOK=playbook-2.4.5.yml
+  - env: PLAYBOOK=playbook-2.5.3.yml
+  - env: PLAYBOOK=playbook-2.6.0.yml
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
