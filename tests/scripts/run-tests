@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# To be run within the VM
+
+set -euo pipefail
+IFS=$'\n\t'
+
+cd /vagrant
+bundle install
+bundle exec rake
