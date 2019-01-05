@@ -8,10 +8,10 @@ install:
   - ansible --version
 
 script:
-  - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --syntax-check
-  - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --connection=local --become
+  - ansible-playbook "tests/$PLAYBOOK" --inventory tests/inventory --syntax-check
+  - ansible-playbook "tests/$PLAYBOOK" --inventory tests/inventory --connection=local --become
   - >
-    ansible-playbook tests/playbook.yml -i tests/inventory --connection=local --become
+    ansible-playbook tests/$PLAYBOOK -i tests/inventory --connection=local --become
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
