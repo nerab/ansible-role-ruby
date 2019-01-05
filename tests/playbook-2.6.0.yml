@@ -5,6 +5,6 @@
     ruby_version:
       major: 2
       minor: 6
-      revision: 0
+      teeny: 0
   roles:
     - ansible-role-ruby
