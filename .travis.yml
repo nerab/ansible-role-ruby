@@ -10,6 +10,9 @@ install:
 script:
   - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --syntax-check
   - ansible-playbook "tests/$PLAYBOOK" -i tests/inventory --connection=local --become
+  - cd tests
+  - bundle install
+  - bundle exec rake
 
 matrix:
   include:
