@@ -8,7 +8,7 @@
   tags: ruby,gem
 
 - name: Uninstall the current Ruby
-  shell: "xargs rm --dir < /usr/local/src/ruby-{{ ruby_version_present.stdout }}/.installed.list"
+  shell: "xargs rm --dir < /usr/local/src/ruby-{{ ruby_version_present.stdout }}-installed.list"
   ignore_errors: true
   become: true
   tags: ruby

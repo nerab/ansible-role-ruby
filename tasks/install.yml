@@ -17,14 +17,14 @@
 
 - name: Download Ruby tarball
   get_url:
-    url="https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/ruby-{{ ruby_version_full }}.tar.gz"
-    dest="/tmp/ruby-{{ ruby_version_full }}.tar.gz"
+    url: "https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/ruby-{{ ruby_version_full }}.tar.gz"
+    dest: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
   tags: ruby
 
 - name: Unpack Ruby tarball
   unarchive:
     src: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
-    dest: "/usr/local/src"
+    dest: /usr/local/src
     remote_src: yes
   become: true
   tags: ruby
@@ -54,3 +54,25 @@
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
   become: true
   tags: ruby
+
+- name: Keep .installed.list for later uninstall
+  copy:
+    src: /usr/local/src/ruby-{{ ruby_version_full }}/.installed.list
+    dest: /usr/local/src/ruby-{{ ruby_version_full }}-installed.list
+    remote_src: yes
+  become: true
+  tags: ruby
+
+- name: Remove Ruby sources
+  file:
+    path: "/usr/local/src/ruby-{{ ruby_version_full }}"
+    state: absent
+  become: true
+  tags: ruby,cleanup
+
+- name: Remove Ruby tarball
+  file:
+    path: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
+    state: absent
+  become: true
+  tags: ruby,cleanup
