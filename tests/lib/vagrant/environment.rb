@@ -5,7 +5,7 @@ require 'vagrant/machine_readable_output/command'
 
 module Vagrant
   #
-  # Represents a Vagrant environment with potentially virtual machines
+  # Represents a Vagrant environment with zero or more VMs
   #
   class Environment
     include Command

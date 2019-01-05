@@ -32,7 +32,7 @@ module Vagrant
     end
 
     #
-    # Returns true the VM has a snapshot with the given name
+    # Returns true if the VM has a snapshot with the given name
     #
     def has_snapshot?(snapshot_name)
       snapshots.include?(snapshot_name)

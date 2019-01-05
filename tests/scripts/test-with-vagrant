@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+puts 'This script is not used anymore. We replaced it with a matrix of VMs.'
+exit 1
+
 $LOAD_PATH.unshift File.join(__dir__, '..', 'lib')
 require 'fileutils'
 require 'vagrant/environment'
