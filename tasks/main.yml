@@ -12,7 +12,7 @@
 
 - name: Install the desired Ruby version
   include: tasks/install.yml
-#  when: "(ruby_version_present is failed) or (ruby_version_full not in ruby_version_present.stdout)"
+  when: "(ruby_version_present is failed) or (ruby_version_full not in ruby_version_present.stdout)"
   tags: ruby
 
 - name: Assert that the present ruby version is equal to the desired {{ ruby_version_full }}
