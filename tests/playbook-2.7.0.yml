@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  vars:
+    ruby_version:
+      major: 2
+      minor: 7
+      teeny: 0
+  roles:
+    - ansible-role-ruby
