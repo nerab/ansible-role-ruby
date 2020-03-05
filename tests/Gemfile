@@ -8,7 +8,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'pry'
   gem 'pry-byebug'
-  gem 'rake'
+  gem 'rake', '>= 12.3.3'
   gem 'rb-readline'
   gem 'rspec'
   gem 'rubocop'
