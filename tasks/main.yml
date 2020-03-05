@@ -22,7 +22,7 @@
   ignore_errors: no
   tags: ruby
 
-- name: Install latest bundler gem
+- name: Installed bundler is latest
   gem:
     name: bundler
     user_install: no
@@ -30,7 +30,7 @@
   become: true
   tags: ruby,gem,bundler
 
-- name: Set global gem options
+- name: Global gem options are set
   copy:
     src: etc/gemrc
     dest: /etc/gemrc
@@ -40,7 +40,7 @@
   become: true
   tags: ruby,gem
 
-- name: Add gem user_dir to PATH
+- name: gem user_dir is part of $PATH
   copy:
     src: etc/profile.d/gem-user_dir-path.sh
     dest: /etc/profile.d/gem-user_dir-path.sh
