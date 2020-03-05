@@ -6,7 +6,6 @@ sudo: required
 install:
   - pip install ansible
   - ansible --version
-  - gem install bundler
 
 script:
   - ansible-playbook "tests/$PLAYBOOK" --inventory tests/inventory --syntax-check
@@ -17,6 +16,7 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
   - cd tests
+  - sudo gem install bundler
   - bundle install
   - bundle exec rake
 
