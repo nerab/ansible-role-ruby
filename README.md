@@ -10,7 +10,7 @@ You may override the installed version from [`defaults/main.yml`](defaults/main.
 vars:
   ruby_version:
     major: 2
-    minor: 6
+    minor: 7
     teeny: 0
 ```
 
@@ -21,13 +21,12 @@ There is a [Vagrant file](tests/Vagrantfile) in the [tests](tests) folder that r
 The Travis setup can be mimicked locally (from the project's root directory) with
 
 ```sh
-$ ANSIBLE_ROLES_PATH=.. ansible-playbook -i tests/inventory tests/playbook-2.6.0.yml --syntax-check
+$ ANSIBLE_ROLES_PATH=.. ansible-playbook -i tests/inventory tests/playbook-2.6.5.yml --syntax-check
 ```
 
 # TODO
 
 * Uninstall leaves a lot of empty directories behind
   => Can we just use the ones from `.installed.list` and delete those that are empty?
-* Does "make -j `nproc`" improve compilation time?
 * Test upgrades between supported versions
 * Perhaps switch tests to use [Molecule](https://www.jeffgeerling.com/blog/2018/testing-your-ansible-roles-molecule)
