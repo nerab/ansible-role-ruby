@@ -1,4 +1,4 @@
-- name: Install prerequisite software
+- name: Prerequisite software is installed
   apt:
     update_cache: yes
     name:
@@ -15,13 +15,13 @@
   become: true
   tags: apt,ruby
 
-- name: Download Ruby tarball
+- name: Ruby tarball is downloaded
   get_url:
     url: "https://cache.ruby-lang.org/pub/ruby/{{ ruby_version.major }}.{{ ruby_version.minor }}/ruby-{{ ruby_version_full }}.tar.gz"
     dest: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
   tags: ruby
 
-- name: Unpack Ruby tarball
+- name: Ruby tarball is unpacked
   unarchive:
     src: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
     dest: /usr/local/src
@@ -29,7 +29,7 @@
   become: true
   tags: ruby
 
-- name: Configure Ruby
+- name: Ruby is configured
   command: |
           ./configure
           --enable-shared
@@ -41,21 +41,20 @@
   become: true
   tags: ruby
 
-- name: Build Ruby
-  command: make
-  args:
+- name: Ruby is built
+  make:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
   become: true
-  tags: ruby
+  tags: ruby,make
 
-- name: Install Ruby
-  command: make install
-  args:
+- name: Ruby is installed
+  make:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
-  become: true
-  tags: ruby
+    target: install
+  become: yes
+  tags: ruby,make
 
-- name: Keep .installed.list for later uninstall
+- name: .installed.list is preserved for later uninstall
   copy:
     src: /usr/local/src/ruby-{{ ruby_version_full }}/.installed.list
     dest: /usr/local/src/ruby-{{ ruby_version_full }}-installed.list
@@ -63,14 +62,14 @@
   become: true
   tags: ruby
 
-- name: Remove Ruby sources
+- name: Ruby sources are gone
   file:
     path: "/usr/local/src/ruby-{{ ruby_version_full }}"
     state: absent
   become: true
   tags: ruby,cleanup
 
-- name: Remove Ruby tarball
+- name: Ruby tarball is not present anymore
   file:
     path: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
     state: absent
