@@ -39,11 +39,13 @@
   args:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
   become: true
-  tags: ruby
+  tags: ruby,configure
 
 - name: Ruby is built
   make:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
+    params:
+      jobs: "{{ ansible_processor_vcpus }}"
   become: true
   tags: ruby,make
 
