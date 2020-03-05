@@ -6,5 +6,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 cd /vagrant
+sudo gem install bundler
 bundle install
 bundle exec rake
