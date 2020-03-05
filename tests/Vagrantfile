@@ -6,10 +6,11 @@ Vagrant.configure('2') do |config|
     v.memory = 256
   end
 
-  boxes = %w(debian/jessie64 ubuntu/bionic64)
+  debian =  %w(jessie stretch buster).map { |b| "debian/#{b}64" }
+  ubuntu =  %w(xenial bionic).map { |b| "ubuntu/#{b}64" }
   playbooks = Dir.glob('playbook-*.yml')
 
-  playbooks.product(boxes).each do |playbook, box|
+  playbooks.product(debian + ubuntu).each do |playbook, box|
     playbook_type = playbook.match(/playbook-(.*)\.yml/)[1]
     family, flavour = box.split('/')
     vm_name = [flavour, playbook_type].join('-')
