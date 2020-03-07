@@ -3,6 +3,12 @@ language: python
 cache: pip
 sudo: required
 
+before_install:
+  - gem update --system
+  - gem install bundler
+  - gem --version
+  - bundler version
+
 install:
   - pip install ansible
   - ansible --version
@@ -16,7 +22,6 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
   - cd tests
-  - sudo gem install bundler
   - bundle install
   - bundle exec rake
 
