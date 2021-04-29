@@ -4,7 +4,7 @@
   vars:
     ruby_version:
       major: 2
-      minor: 5
-      teeny: 7
+      minor: 7
+      teeny: 3
   roles:
-    - ansible-role-ruby
+    - nerab.ansible-role-ruby
