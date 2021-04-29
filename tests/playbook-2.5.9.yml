@@ -7,4 +7,4 @@
       minor: 5
       teeny: 9
   roles:
-    - nerab.ansible-role-ruby
+    - ansible-role-ruby
