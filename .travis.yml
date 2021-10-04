@@ -27,10 +27,9 @@ script:
 
 matrix:
   include:
-  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-2.5.9.yml
-  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-2.6.7.yml
-  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-2.7.3.yml
-  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-3.0.1.yml
+  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-2.6.8.yml
+  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-2.7.4.yml
+  - env: ANSIBLE_ROLES_PATH=.. PLAYBOOK=playbook-3.0.2.yml
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
