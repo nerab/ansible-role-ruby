@@ -3,8 +3,8 @@
   become: true
   vars:
     ruby_version:
-      major: 2
-      minor: 6
-      teeny: 9
+      major: 3
+      minor: 0
+      teeny: 4
   roles:
     - ansible-role-ruby
