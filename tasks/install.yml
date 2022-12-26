@@ -1,6 +1,6 @@
 - name: Prerequisite software is installed
   apt:
-    update_cache: yes
+    update_cache: true
     name:
       - autoconf
       - build-essential
@@ -25,7 +25,7 @@
   unarchive:
     src: "/tmp/ruby-{{ ruby_version_full }}.tar.gz"
     dest: /usr/local/src
-    remote_src: yes
+    remote_src: true
   become: true
   tags: ruby
 
@@ -53,14 +53,14 @@
   make:
     chdir: /usr/local/src/ruby-{{ ruby_version_full }}
     target: install
-  become: yes
+  become: true
   tags: ruby,make
 
 - name: .installed.list is preserved for later uninstall
   copy:
     src: /usr/local/src/ruby-{{ ruby_version_full }}/.installed.list
     dest: /usr/local/src/ruby-{{ ruby_version_full }}-installed.list
-    remote_src: yes
+    remote_src: true
   become: true
   tags: ruby
 

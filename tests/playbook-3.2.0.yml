@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  vars:
+    ruby_version:
+      major: 3
+      minor: 2
+      teeny: 0
+  roles:
+    - ../..
