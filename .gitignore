@@ -1,5 +1,4 @@
 .envrc
 ansible.cfg
-tests/test.retry
 .DS_Store
 *.retry

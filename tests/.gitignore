@@ -1,3 +1,5 @@
 *.log
 .bundle
 .vagrant
+Gemfile.lock
+*.retry
