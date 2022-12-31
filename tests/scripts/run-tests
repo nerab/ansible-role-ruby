@@ -5,7 +5,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+bundle config set silence_root_warning true
+
 cd /vagrant
-sudo gem install bundler
 bundle install
 bundle exec rake

@@ -26,6 +26,7 @@
   gem:
     name: bundler
     user_install: no
+    norc: true
     state: latest
   become: true
   tags: ruby,gem,bundler
