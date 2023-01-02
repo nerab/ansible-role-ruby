@@ -19,13 +19,13 @@
   command: /usr/local/bin/ruby -e "exit '{{ ruby_version_full }}' == RUBY_VERSION"
   register: command_result
   changed_when: command_result.rc != 0
-  ignore_errors: no
+  ignore_errors: false
   tags: ruby
 
 - name: Installed bundler is latest
   gem:
     name: bundler
-    user_install: no
+    user_install: false
     norc: true
     state: latest
   become: true
